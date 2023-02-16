@@ -52,48 +52,83 @@ WeatherApp has the following methods:
     17. CREATE a new `<h3>` element, name it *header*
     18. SET *header*'s inner text to 'Weather App'
     19. APPEND *header* to *innerCol*
-    
-    ??. END **init**
+    20. CREATE a new `<div>` element, name it *appForm*
+    21. SET *appForm*'s id to "app-form"
+    22. CREATE a new `label` element, name it *formLabel*
+    23. SET *formLabel*'s for attribute to "zip-code-entry"
+    24. SET *formLabel*'s class to "form-label*
+    25. SET *formLabel*'s inner text to "Enter a zip code:"
+    26. CREATE a new `<div>` element, name it *inputGroup*
+    27. SET *inputGroup*'s class to "input-group*
+    28. CREATE a new `<input>` element, name it *zipCodeEntry*
+    29. SET *zipCodeEntry*'s id to "zip-code-entry"
+    30. SET *zipCodeEntry*'s class to "form-control"
+    31. SET *zipCodeEntry*'s type to "text"
+    32. APPEND *zipCodeEntry* to *inputGroup*
+    33. CREATE a new `<button>` element, name it *zipCodeSubmit*
+    34. SET *zipCodeSubmit*'s id to "zip-code-submit"
+    35. SET *zipCodeSubmit*'s class to "btn btn-primary"
+    36. SET *zipCodeSumbit*'s type to "button"
+    37. ADD an event listener to *zipCodeSubmit* that calls the **getData** method after a 'click' event
+    38. APPEND *zipCodeSubmit* to *inputGroup*
+    39. CREATE a new `<div>` element, name it *formText*
+    40. SET *formText*'s class to "form-text"
+    41. SET *formText*'s inner text to "Enter a 5-digit US postal code, e.g. 90210"
+    42. APPEND *formLabel* to *appForm*
+    43. APPEND *inputGroup* to *appForm*
+    44. APPEND *formText* to *appForm*
+    45. APPEND *appForm* to *innerCol*
+    46. APPEND *innerCol* to *innerRow*
+    47. APPEND *innerRow* to *appHead*
+    48. APPEND *appHead* to *outerCol*
+    49. CREATE a new `<div>` element, name it *appBody*
+    50. SET *appBody*'s id to "app-body"
+    51. APPEND *appBody* to *outerCol*
+    52. APPEND *outerCol* to *outerRow*
+    53. APPEND *outerRow* to *appShell*
+    54. APPEND *appShell* to *newPage*
+    55. APPEND *newPage* to *main*
+    56. END **init** (!!!)
 - **getData**
-  - When called, **getData** checks for a value in the 'location' element in the HTML document, and if it is there and (seemingly) a valid zip code, makes a request to the OpenWeather Geocoding API to convert the zip code to expanded location information. If that succeeds, the information is used to make a call to the OpenWeather data API to get information about the current weather at that location. If this request is successful, the response is passed to the **updateWeather** method to extract the data, and then a call is made to the **updatePage** method to display that information to the page. If the requests fail, or our preliminary check of the value of the location element indicated that a proper location was not provided, instead the *errorMessage* property is updated to a description of the problem, and **updatePage** is called to display the error message.
+  - When called, **getData** checks for a value in the 'zip-code-entry' element in the HTML document, and if it is there and (seemingly) a valid zip code, makes a request to the OpenWeather Geocoding API to convert the zip code to expanded location information. If that succeeds, the information is used to make a call to the OpenWeather data API to get information about the current weather at that location. If this request is successful, the response is passed to the **updateWeather** method to extract the data, and then a call is made to the **updatePage** method to display that information to the page. If the requests fail, or our preliminary check of the value of the location element indicated that a proper location was not provided, instead the *errorMessage* property is updated to a description of the problem, and **updatePage** is called to display the error message.
   - Procedure:
     1. START **getData**
-    2. GET a reference to the 'location' element in the HTML document
-    3. IF the 'location' element has no value
+    2. GET a reference to the 'zip-code-entry' element in the HTML document
+    3. IF the 'zip-code-entry' element has no value
        - SET *errorMessage* to "Please provide a location"
        - CALL **updatePage**
-    4. ELSE IF the value of the 'location' element is not exactly 5 characters long
+    4. ELSE IF the value of the 'zip-code-entry' element is not exactly 5 characters long
        - SET *errorMessage* to "5 digits are required"
        - CALL **updatePage**
-    5. ELSE IF the value of the 'location' element is not an integer
+    5. ELSE IF the value of the 'zip-code-entry' element is not an integer
        - SET *errorMessage* to "Only digits, no letters, periods or dashes"
        - CALL **updatePage**
     6. ELSE (input value looks good)
-       - SET the *zipCode* property of *location* equal to the value of the 'location' element
-       - INIT a zipOptions object with the keys *baseURL* and *params*, where *baseURL* has a value of **BASE_URL**, and *params* with an object as its value. *params* contains the keys *zip* with the value of the zipCode and country properties of location, joined by a comma, and *appid* with the value of **API_KEY**
-       - Create a new promise using the Axios client's get command, making a call to OpenWeather's geocoding API using *zipOptions* as the config argument
+       - SET the *zipCode* property of *location* equal to the value of the 'zip-code-entry' element
+       - INIT a *zipOptions* object with the keys *baseURL* and *params*, where *baseURL* has a value of **BASE_URL**, and *params* with an object as its value. *params* contains the keys *zip* with the value of the *zipCode* and *country* properties of *location*, joined by a comma, and *appid* with the value of **API_KEY**
+       - Create a new promise using the Axios client's `get` command, making a call to OpenWeather's geocoding API using *zipOptions* as the config argument
          - If the call is successful
-           - SET location's lat property to the response's lat property
+           - SET location's *lat* property to the response's *lat* property
            - SET *location*'s *lon* property to the response's *lon* property
            - SET *location*'s *city* property to the response's *name* property
-           - INIT a weatherOptions object with the keys *baseURL* and *params*, where *baseURL* has a value of **BASE_URL** and *params* with an object as its value. *params* contains the keys *lat* with the value of lat property of location, *lon* with the value of the lon property of location, and *appid* with the value of **API_KEY**
-           - Create a new promise using the Axios client's get command, making a call to OpenWeather's data API using weatherOptions as the config argument
+           - INIT a *weatherOptions* object with the keys *baseURL* and *params*, where *baseURL* has a value of **BASE_URL** and *params* with an object as its value. *params* contains the keys *lat* with the value of lat property of *location*, *lon* with the value of the *lon* property of *location*, and *appid* with the value of **API_KEY**
+           - Create a new promise using the Axios client's `get` command, making a call to OpenWeather's data API using weatherOptions as the config argument
              - IF the call is successful
-               - CALL updateWeather, passing it the response
+               - CALL **updateWeather**, passing it the response
                - THEN CALL **updatePage**
              - ELSE IF the call fails
-               - SET errorMessage to response (probably a server error if the input was good for the first API call)
+               - SET *errorMessage* to response (probably a server error if the input was good for the first API call)
                - CALL **updatePage**
              - ENDIF 
          - ELSE IF the (geocoding) call fails
-           - SET errorMessage to (zipCode): (message response, should be "not found")
+           - SET *errorMessage* to (zipCode): (message response, should be "not found")
            - CALL **updatePage**
          - ENDIF
     7. ENDIF
     8. END **getData**
   - updatePage should have been called in all of the conditional statements; it would be nice to just do a call at the end, but waiting on the promise to be fulfilled means at least those calls need to be in the `.then` functions
 - **updateWeather** (*data*)
-  - When called, updateWeather picks through the *data* object generated by the OpenWeather API and sets the properties of *weather* to the relevant properties of data
+  - When called, **updateWeather** picks through the *data* object generated by the OpenWeather API and sets the properties of *weather* to the relevant properties of data
   - Procedure:
     1. START **updateWeather**
     2. READ *data*
@@ -101,10 +136,10 @@ WeatherApp has the following methods:
     4. CALCULATE and SET the *celsius* property of the *temperature* object of *weather* to a string with the value of the *temp* property of the *main* object of *data* - 273.15 plus the string " C"
     5. CALCULATE and SET the *fahrenheit* property of the *temperature* object of *weather* to a string with the value (the value of the *temp* property of the *main* object of *data* -273.15) * 9 / 5 + 32 plus the string " F"
     6. SET the *condition* property of *weather* to the value of the *description* property of the *weather* object of *data*
-    7. SET the *image* property of *weather* to the string "https://openweathermap.org/img/wn/" + the value of the *icon* property of the *weather* object of *data* + the string "@2x.png" (this url points to a 100x100 pixel image representation of the current weather)
+    7. SET the *image* property of *weather* to the string `<img src='https://openweathermap.org/img/wn/` + the value of the *icon* property of the *weather* object of *data* + the string `@2x.png' alt='An icon depicting current weather conditions'>` (this url points to a 100x100 pixel image representation of the current weather)
     8. END **updateWeather**
 - **updatePage**
-  - When called, **updatePage** checks the flags of the pageStatus object and publishes the appropriate response to the HTML document.
+  - When called, **updatePage** checks to see if there is currently an error message described. If there is, that message is rendered to the screen. If not, and there is weather data available to show, that is instead rendered to the screen.
   - Procedure
     1. START **updatePage**
     2. GET a reference to the HTML element with the id 'app-body', name it *body*
@@ -124,6 +159,7 @@ WeatherApp has the following methods:
   - TODO:
     - Clear out the rest of data in *location* and *weather*, possibly storing it in local storage
     - The titles I'm passing to makeRow are *mostly* the same as the property name, would be nice if I didn't have to type them out. Could set up an array or object that defines the order of elements on the page that would be extendable
+    - Make a clear/reset button to remove stuff rendered to the screen, possibly
 - **makeRow** (*element*, *title*)
   - When called, **makeRow** creates HTML elements to make a new row using Bootstrap's grid system that contains the passed *element*. It checks for the presence of a passed *title*; if there is one, it calls the **makeTable** method to create a table out of the *element* and *title*. If no title is passed, it instead writes the *element* to a paragraph `<p>` and appends it to the 'col' `<div>`.  It returns a reference to the top 'row' `<div>` Currently this is only planned to be used for the body of the app, but I would like to also make it work for the form at the top of the head.
   - Procedure
@@ -182,3 +218,5 @@ WeatherApp has the following methods:
 1. START
 2. INIT **Weather-APP**
 3. CALL **Weather-APP**.**init**()
+4. WAIT for user input
+5. CALL **getData** when the 'zip-code-submit' button is clicked
