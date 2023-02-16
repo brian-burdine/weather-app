@@ -41,7 +41,7 @@ WeatherApp has the following methods:
     6. CREATE a new `<div>` element, name it *outerRow*
     7. SET *outerRow*'s class to "row justify-content-center"
     8. CREATE a new `<div>` element, name it *outerCol*
-    9. SET *outerCol*'s class to "col-3"
+    9. SET *outerCol*'s class to "col-4"
     10. CREATE a new `<div>` element, name it *appHead*
     11. SET *appHead*'s class to "container"
     12. SET *appHead*'s id to "app-head"
@@ -50,6 +50,7 @@ WeatherApp has the following methods:
     15. CREATE a new `div` element, name it *innerCol*
     16. SET *innerCol*'s class to "col"
     17. CREATE a new `<h3>` element, name it *header*
+    18. SET *header*'s class to "text-center"
     18. SET *header*'s inner text to 'Weather App'
     19. APPEND *header* to *innerCol*
     20. CREATE a new `<div>` element, name it *appForm*
@@ -69,6 +70,7 @@ WeatherApp has the following methods:
     34. SET *zipCodeSubmit*'s id to "zip-code-submit"
     35. SET *zipCodeSubmit*'s class to "btn btn-primary"
     36. SET *zipCodeSumbit*'s type to "button"
+    38. SET *zipCodeSubmit*'s inner text to "Get Weather"
     37. ADD an event listener to *zipCodeSubmit* that calls the **getData** method after a 'click' event
     38. APPEND *zipCodeSubmit* to *inputGroup*
     39. CREATE a new `<div>` element, name it *formText*
@@ -82,13 +84,14 @@ WeatherApp has the following methods:
     47. APPEND *innerRow* to *appHead*
     48. APPEND *appHead* to *outerCol*
     49. CREATE a new `<div>` element, name it *appBody*
-    50. SET *appBody*'s id to "app-body"
-    51. APPEND *appBody* to *outerCol*
-    52. APPEND *outerCol* to *outerRow*
-    53. APPEND *outerRow* to *appShell*
-    54. APPEND *appShell* to *newPage*
-    55. APPEND *newPage* to *main*
-    56. END **init** (!!!)
+    50. SET *appBody*'s class to "container"
+    51. SET *appBody*'s id to "app-body"
+    52. APPEND *appBody* to *outerCol*
+    53. APPEND *outerCol* to *outerRow*
+    54. APPEND *outerRow* to *appShell*
+    55. APPEND *appShell* to *newPage*
+    56. APPEND *newPage* to *main*
+    57. END **init** (!!!)
 - **getData**
   - When called, **getData** checks for a value in the 'zip-code-entry' element in the HTML document, and if it is there and (seemingly) a valid zip code, makes a request to the OpenWeather Geocoding API to convert the zip code to expanded location information. If that succeeds, the information is used to make a call to the OpenWeather data API to get information about the current weather at that location. If this request is successful, the response is passed to the **updateWeather** method to extract the data, and then a call is made to the **updatePage** method to display that information to the page. If the requests fail, or our preliminary check of the value of the location element indicated that a proper location was not provided, instead the *errorMessage* property is updated to a description of the problem, and **updatePage** is called to display the error message.
   - Procedure:
