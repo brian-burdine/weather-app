@@ -65,7 +65,7 @@ const WeatherApp = {
         innerCol.className = "col";
 
         let header = document.createElement('h3');
-        header.className = "text-center";
+        header.className = "text-center m-3";
         header.innerText = "Weather App";
         innerCol.appendChild(header);
 
@@ -186,7 +186,7 @@ const WeatherApp = {
                             console.log("Call failed");
                             console.log(error);
 
-                            this.errorMessage = error;
+                            this.errorMessage = error.name + ": " + error.message;
                             this.updatePage();
                         });
                 })
@@ -194,7 +194,7 @@ const WeatherApp = {
                     console.log("Call failed");
                     console.log(error);
 
-                    this.errorMessage = error;
+                    this.errorMessage = error.name + ": " + error.message;
                     this.updatePage();
                 });
         }
@@ -209,14 +209,15 @@ const WeatherApp = {
         // Grab the temperature, doing conversions from kelvin as necessary
         let temp = data.main.temp;
         this.weather.temperature.kelvin = temp + " K";
-        this.weather.temperature.celsius = (temp - 273.15) + " C";
-        this.weather.temperature.fahrenheit = ((temp -273.15) * 9 / 5 + 32) 
-            + " F";
+        this.weather.temperature.celsius = (temp - 273.15).toFixed(2) + " C";
+        this.weather.temperature.fahrenheit = 
+            ((temp -273.15) * 9 / 5 + 32).toFixed(2) + " F";
         
         // Get the current condition, capitalize the first letter
         this.weather.condition = data.weather[0].description;
-        this.weather.condition = this.weather.condition.charAt(0).toUpperCase()
-            + this.weather.condition.substring(1);
+        this.weather.condition = 
+            this.weather.condition.charAt(0).toUpperCase() + 
+            this.weather.condition.substring(1);
         
         // Get the icon for the current weather
         this.weather.image = '<img src="https://openweathermap.org/img/wn/'
@@ -234,10 +235,14 @@ const WeatherApp = {
         
         console.log(this.location);
 
-        // Get a reference to the container for the body, create a border 
-        // around it
+        // Get a reference to the container for the body and its parent
         let body = document.getElementById('app-body');
-        body.classList.add("border-2");
+        let bodyParent = body.parentNode;
+
+        // Create a replacement body element to overwrite the previous
+        let newBody = document.createElement('div');
+        newBody.className = "container border border-3 pt-2 text-center";
+        newBody.id = 'app-body';
 
         // Create a new html fragment to write new elements to
         let newPage = new DocumentFragment();
@@ -262,8 +267,9 @@ const WeatherApp = {
             this.weather.condition = "";
         }
 
-        // Add the created elements to the body
-        body.appendChild(newPage);
+        // Add the created elements to the new body and replace the old one
+        newBody.appendChild(newPage);
+        bodyParent.replaceChild(newBody, body);
     },
 
     // A function that creates a row and column <div> element to interact with
@@ -322,7 +328,7 @@ const WeatherApp = {
             bottomRow.appendChild(elementCell);
         } else if (typeof element == "object") {
             let properties = Object.getOwnPropertyNames(element);
-            debugger;
+            titleCell.setAttribute('colspan', properties.length);
             for (property of properties) {
                 let elementCell = document.createElement('td');
                 elementCell.innerHTML = element[property];
