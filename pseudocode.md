@@ -45,9 +45,9 @@ WeatherApp has the following methods:
     10. CREATE a new `<div>` element, name it *appHead*
     11. SET *appHead*'s class to "container"
     12. SET *appHead*'s id to "app-head"
-    13. CREATE a new `div` element, name it *innerRow*
+    13. CREATE a new `<div>` element, name it *innerRow*
     14. SET *innerRow*'s class to "row"
-    15. CREATE a new `div` element, name it *innerCol*
+    15. CREATE a new `<div>` element, name it *innerCol*
     16. SET *innerCol*'s class to "col"
     17. CREATE a new `<h3>` element, name it *header*
     18. SET *header*'s class to "text-center"
@@ -55,7 +55,7 @@ WeatherApp has the following methods:
     19. APPEND *header* to *innerCol*
     20. CREATE a new `<div>` element, name it *appForm*
     21. SET *appForm*'s id to "app-form"
-    22. CREATE a new `label` element, name it *formLabel*
+    22. CREATE a new `<label>` element, name it *formLabel*
     23. SET *formLabel*'s for attribute to "zip-code-entry"
     24. SET *formLabel*'s class to "form-label*
     25. SET *formLabel*'s inner text to "Enter a zip code:"
@@ -115,7 +115,7 @@ WeatherApp has the following methods:
            - SET *location*'s *lon* property to the response's *lon* property
            - SET *location*'s *city* property to the response's *name* property
            - INIT a *weatherOptions* object with the keys *baseURL* and *params*, where *baseURL* has a value of **BASE_URL** and *params* with an object as its value. *params* contains the keys *lat* with the value of lat property of *location*, *lon* with the value of the *lon* property of *location*, and *appid* with the value of **API_KEY**
-           - Create a new promise using the Axios client's `get` command, making a call to OpenWeather's data API using weatherOptions as the config argument
+           - Create a new promise using the Axios client's `get` command, making a call to OpenWeather's data API using *weatherOptions* as the config argument
              - IF the call is successful
                - CALL **updateWeather**, passing it the response
                - THEN CALL **updatePage**
