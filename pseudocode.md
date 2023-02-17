@@ -176,9 +176,9 @@ WeatherApp has the following methods:
        - INIT *table* to the value of **makeTable**, passed *element* and *title* as arguments
        - APPEND *table* to *col*
     8. ELSE
-       - CREATE a new `<p>` element, name it *error*
-       - SET *error*'s inner text to *errorMessage*
-       - APPEND *error* to *col*
+       - CREATE a new `<p>` element, name it *para*
+       - SET *para*'s inner text to *element*
+       - APPEND *para* to *col*
     9. ENDIF
     10. APPEND *col* to *row*
     11. RETURN *row*
@@ -201,7 +201,7 @@ WeatherApp has the following methods:
     13. APPEND *head* to *table*
     14. CREATE a new `<tbody>` element, name it *body*
     15. SET *body*'s class to "table-group-divider"
-    16. CREATE a new `<trow>` element, name it *bottomRow*
+    16. CREATE a new `<tr>` element, name it *bottomRow*
     17. IF *element* is an object
         - INIT *properties* as an array containing all of the properties of *element*  (In Javascript: `Object.getOwnPropertyNames(element)`)
         - FOR every property in *properties*
