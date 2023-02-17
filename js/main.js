@@ -90,7 +90,7 @@ const WeatherApp = {
         zipCodeSubmit.className = "btn btn-primary";
         zipCodeSubmit.setAttribute('type', "button");
         zipCodeSubmit.innerText = "Get Weather";
-        zipCodeSubmit.addEventListener('click', this.getData);
+        zipCodeSubmit.addEventListener('click', this.getData.bind(this));
         inputGroup.appendChild(zipCodeSubmit);
 
         let formText = document.createElement('div');
@@ -127,17 +127,95 @@ const WeatherApp = {
     // displayed. If the access attempt failed, or if the input provided did
     // not appear to be a zip code, an error message is created and displayed.
     getData: function () {
-        console.log("button clicked!")
+        console.log("button clicked!");
+
+        // Grab the contents of the zip code entry field
+        let zipCodeEntry = document.getElementById('zip-code-entry');
+        let zipCodeTest = zipCodeEntry.value;
+
+        // Check to see if the value obtained looks like a zip code
+        if (!zipCodeTest) {
+            this.errorMessage = "Please provide a location";
+            this.updatePage();
+        } else if (zipCodeTest.length != 5) {
+            this.errorMessage = "5 digits are required";
+            this.updatePage();
+        } else if (!Number.isInteger(Number(zipCodeTest))) {
+            this.errorMessage = "Only digits, no letters, periods or dashes";
+            this.updatePage();
+        }
+        else { // Input looks solid
+            // Store the provided value in the location property
+            this.location.zipCode = zipCodeTest;
+
+            // Create a config option to use in the axios call
+            let zipOptions = {
+                baseURL: this.BASE_URL,
+                params: {
+                    zip: this.location.zipCode + "," + this.location.country,
+                    appid: this.API_KEY
+                }
+            };
+
+            // Create a promise to access the OpenWeather geocoder API
+            axios.get("geo/1.0/zip", zipOptions)
+                .then((response) => {
+                    this.location.lat = response.data["lat"];
+                    this.location.lon = response.data["lon"];
+                    this.location.city = response.data["name"];
+                    
+                    console.log(this.location);
+
+                    // Create a config option to use in the axios call
+                    let weatherOptions = {
+                        baseURL: this.BASE_URL,
+                        params: {
+                            lat: this.location.lat,
+                            lon: this.location.lon,
+                            appid: this.API_KEY
+                        }
+                    };
+
+                    // Create a promise to access the OpenWeather weather API
+                    axios.get("data/2.5/weather", weatherOptions)
+                        .then((response) => {
+                            this.updateWeather(response.data);
+                            this.updatePage();
+                        })
+                        .catch((error) => {
+                            console.log("Call failed");
+                            console.log(error);
+
+                            this.errorMessage = error;
+                            this.updatePage();
+                        });
+                })
+                .catch((error) => {
+                    console.log("Call failed");
+                    console.log(error);
+
+                    this.errorMessage = error;
+                    this.updatePage();
+                });
+        }
+
     },
 
     // A function that takes the data received from a successful API call and
     // stores the relevant information from it in local memory
-    updateWeather: function (data) {},
+    updateWeather: function (data) {
+        console.log("updateWeather called");
+    },
 
     // A function that displays the most recently generated content to the
     // page, either information about the current weather in a valid zip code,
     // or an error message describing why no weather information is available.
-    updatePage: function () {},
+    updatePage: function () {
+        console.log("updatePage called");
+        console.log(this.errorMessage);
+        this.errorMessage = "";
+        console.log(this.location);
+    },
 
     // A function that creates a row and column <div> element to interact with
     // Bootstrap's stylesheet. The column contains either a table with a piece
