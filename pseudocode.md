@@ -204,10 +204,11 @@ WeatherApp has the following methods:
     16. CREATE a new `<tr>` element, name it *bottomRow*
     17. IF *element* is an object
         - INIT *properties* as an array containing all of the properties of *element*  (In Javascript: `Object.getOwnPropertyNames(element)`)
-        - FOR every property in *properties*
+        - FOR every property of *properties*
           - CREATE a new `<td>` element, name it *elementCell*
           - SET *elementCell*'s inner text to that property of *element*
           - APPEND *elementCell* to *bottomRow*
+        - ENDFOR
     18. ELSE (*element* is a single string)
         - CREATE a new `<td>` element, name it *elementCell*
         - SET *elementCell*'s inner text to *element*
