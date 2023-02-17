@@ -15,22 +15,27 @@ const WeatherApp = {
 
     // An object containing various descriptors of a place in the world
     location: {
-        zipCode: 0,
-        lat: 0,
-        lon: 0,
-        city: "",
-        country: "us"
+        zipCode: 0,     // ZIP code, in the US a five digit integer
+        lat: 0,         // Lattitude, floating point number
+        lon: 0,         // Longitude, floating point number
+        city: "",       // The name of an area described by a ZIP code
+        country: "us"   // The country, currently locked to the US
     },
 
     // An object containing properties that describe weather conditions in a
     // given location
     weather: {
+        // An object containing different representations of a temperature
         temperature: {
-            kelvin: "",
+            kelvin: "",     
             celsius: "",
             fahrenheit: ""
         },
+        // A string with a short description of current weather conditions
         condition: "",
+        // A string with an HTML <img> tag, with a URL leading to a library
+        // of icons provided by OpenWeather's weather API to visually depict
+        // weather conditions
         image: ""
     },
 
@@ -41,19 +46,21 @@ const WeatherApp = {
     // to name the application and a set of input elements for a user to submit
     // a zip code
     init: function () {
+        // A reference to the target element in the HTMl document
         let main = document.getElementById('main');
 
+        // A document fragment to write HTML elements to
         let newPage = new DocumentFragment();
 
+        // Set up a size-limited column to encase the app
         let appShell = document.createElement('div');
         appShell.className = "container";
-
         let outerRow = document.createElement('div');
         outerRow.className = "row justify-content-center";
-
         let outerCol = document.createElement('div');
         outerCol.className = "col-4";
 
+        // Create the top part of the app that is always rendered
         let appHead = document.createElement('div');
         appHead.className = "container mb-5";
         appHead.id = "app-head";
@@ -64,11 +71,13 @@ const WeatherApp = {
         let innerCol = document.createElement('div');
         innerCol.className = "col";
 
+        // Page title
         let header = document.createElement('h3');
         header.className = "text-center m-3";
         header.innerText = "Weather App";
         innerCol.appendChild(header);
 
+        // Form for user to provide a ZIP code
         let appForm = document.createElement('div');
         appForm.id = "app-form";
 
@@ -76,6 +85,7 @@ const WeatherApp = {
         formLabel.setAttribute('for', "zip-code-entry");
         formLabel.innerText = "Enter a zip code:"
 
+        // input-group styles the text and button to be in-line and connected
         let inputGroup = document.createElement('div');
         inputGroup.className = "input-group";
 
@@ -85,6 +95,8 @@ const WeatherApp = {
         zipCodeEntry.setAttribute('type', "text");
         inputGroup.appendChild(zipCodeEntry);
 
+        // Button has an event listener that checks the value of the text
+        // input on click, main point of interaction with the app
         let zipCodeSubmit = document.createElement('button');
         zipCodeSubmit.id = "zip-code-submit";
         zipCodeSubmit.className = "btn btn-primary";
@@ -97,6 +109,7 @@ const WeatherApp = {
         formText.className = "form-text";
         formText.innerText = "Enter a 5-digit US postal code, e.g. 90210";
 
+        // Combining the form elements together
         appForm.appendChild(formLabel);
         appForm.appendChild(inputGroup);
         appForm.appendChild(formText);
@@ -107,6 +120,8 @@ const WeatherApp = {
 
         outerCol.appendChild(appHead);
 
+        // This element contains the output of the application, and is
+        // targeted by the updatePage method
         let appBody = document.createElement('div');
         appBody.className = "container";
         appBody.id = "app-body";
@@ -116,6 +131,7 @@ const WeatherApp = {
         appShell.appendChild(outerRow);
         newPage.appendChild(appShell);
 
+        // Add the complete fragment to the page
         main.appendChild(newPage);
 
     },
